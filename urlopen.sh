@@ -30,7 +30,7 @@ fi
 CLEANED=$(cat "$1" | sed 's/\r//' | grep -vE '[BASE|ORIG]URL')
 
 # Get the first url. The "URL=" must be at the beginning of the line.
-URL=$(grep '^URL=' "$1" | head -n 1)
+URL=$(echo "$CLEANED" | grep '^URL=' | head -n 1)
 URL=${URL:4}
 if [[ $URL == "" ]]
 then
