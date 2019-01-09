@@ -16,6 +16,7 @@
 # HISTORY
 # 2019-01-06 first version
 # 2019-01-07 fixes and additions
+# 2019-01-09 better input cleaning
 
 # Do we get a file?
 if ! [[ -e "$1" ]]
@@ -25,8 +26,11 @@ then
 	exit 1
 fi
 
-# Get the url.
-URL=$(grep 'URL=' "$1" | head -n 1)
+# Clean up (remove BASEURL and ORIGURL, convert to unix line endings)
+CLEANED=$(cat "$1" | sed 's/\r//' | grep -vE '[BASE|ORIG]URL')
+
+# Get the first url. The "URL=" must be at the beginning of the line.
+URL=$(grep '^URL=' "$1" | head -n 1)
 URL=${URL:4}
 if [[ $URL == "" ]]
 then
